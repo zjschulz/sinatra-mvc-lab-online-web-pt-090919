@@ -1,31 +1,29 @@
 class PigLatinizer
 
   def piglatinize(word)
-
-    non_pig_latin_words = ["i", "me", "to", "too", "a", "an", "in", "and", "on"]
-    vowels = ["a", "e", "i", "o", "u"]
-
-    if non_pig_latin_words.include?(word)
-      word
-    elsif vowels.include? word[0]
-      word << "ay"
+    # word starts with vowel
+    if !consonant?(word[0])
+      word = word + "w"
+    # word starts with 3 consonants
+    elsif consonant?(word[0]) && consonant?(word[1]) && consonant?(word[2])
+      word = word.slice(3..-1) + word.slice(0,3)
+    # word starts with 2 consonants
+    elsif consonant?(word[0]) && consonant?(word[1])
+      word = word.slice(2..-1) + word.slice(0,2)
+    # word starts with 1 consonant
     else
-      consonants = ""
-      while !vowels.include?(word[0])
-        consonants << word[0]
-        word = word.split("")[1..-1].join
-      end
-      word + consonants + 'ay'
+      word = word.slice(1..-1) + word.slice(0)
     end
+    word << "ay"
   end
 
+  def consonant?(char)
+    !char.match(/[aAeEiIoOuU]/)
+  end
 
-  def to_pig_latin(string)
-    string.split.collect{|word| piglatinize(word)}.join(" ")
+  def to_pig_latin(sentence)
+    sentence.split.collect { |word| piglatinize(word) }.join(" ")
   end
 
 end
 
-p = PigLatinizer.new
-
-puts p.piglatinize("pork")
