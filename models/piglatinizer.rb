@@ -1,5 +1,11 @@
 class PigLatinizer
   
+  attr_accessor :words
+  
+  def initialize(words)
+    @words = words
+  end
+  
   def piglatinize(string)
     a = string.split(" ")
     b = a.map {|word| piglatinize_word(word)}
